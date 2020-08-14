@@ -3,20 +3,13 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { Action, StoreModule } from '@ngrx/store';
+import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-
-function simpleReducer(state = 'Hello World', action: Action) {
-
-  switch (action.type) {
-    case 'SPANISH':
-      return 'Hola Mundo';
-    case 'FRENCH':
-      return 'Bonjour le monde';
-    default:
-      return state;
-  }
-}
+import { EffectsModule } from '@ngrx/effects';
+import { PostEffects } from './effects/my-effects';
+import { HttpClientModule } from '@angular/common/http';
+import { postsReducer } from './reducers/my-reducers';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -24,10 +17,13 @@ function simpleReducer(state = 'Hello World', action: Action) {
     AppComponent
   ],
   imports: [
+    ReactiveFormsModule,
+    HttpClientModule,
     BrowserModule,
     AppRoutingModule,
-    StoreModule.forRoot({message: simpleReducer}),
-    StoreDevtoolsModule.instrument({maxAge: 10})
+    StoreModule.forRoot({posts: postsReducer}),
+    StoreDevtoolsModule.instrument({maxAge: 10}),
+    EffectsModule.forRoot([PostEffects])
   ],
   providers: [],
   bootstrap: [AppComponent]
