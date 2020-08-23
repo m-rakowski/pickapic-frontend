@@ -59,4 +59,20 @@ describe('PostService', () => {
     req.flush(expectedPost);
     expect(req.request.method).toBe('POST');
   });
+
+  it('should delete one post', () => {
+    const expectedPost: Post = {
+      id: 3,
+      title: 'Third post',
+      content: 'Famous Blogger'
+    };
+
+    service.deletePostById(3).subscribe(post => {
+      expect(post).toBe(expectedPost);
+    });
+
+    const req = httpMock.expectOne(`http://localhost:3000/posts/3`);
+    req.flush(expectedPost);
+    expect(req.request.method).toBe('DELETE');
+  });
 });

@@ -2,9 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { Post } from './model/post';
-import { createPost, getAllPosts } from './actions/my-actions';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { AppState } from './model/add-state';
+import { PostsState } from './store/reducers';
+import { selectPostsAsArray } from './store/selectors';
+import { actionCreatePost, actionDeleteLastPost, actionGetAllPosts } from './store/actions';
 
 @Component({
   selector: 'app-root',
@@ -16,27 +17,31 @@ export class AppComponent implements OnInit {
   posts$: Observable<Post[]>;
   formGroup: FormGroup;
 
-  constructor(private store: Store<AppState>) {
-  }
-
-  createPost(): void {
-    console.log('create post ', this.formGroup.value);
-    if (this.formGroup.valid) {
-      this.store.dispatch(createPost({post: this.formGroup.value}));
-    }
+  constructor(private store: Store<PostsState>) {
   }
 
   ngOnInit(): void {
     this.createForm();
-    this.posts$ = this.store.select('posts');
+    this.posts$ = this.store.select(selectPostsAsArray);
+    this.getAllPosts();
+  }
+
+  createPost(): void {
+    if (this.formGroup.valid) {
+      this.store.dispatch(actionCreatePost({post: this.formGroup.value}));
+    }
   }
 
   getAllPosts() {
-    this.store.dispatch(getAllPosts());
+    this.store.dispatch(actionGetAllPosts());
   }
 
   formControl(controlName: string): FormControl {
     return this.formGroup.get(controlName) as FormControl;
+  }
+
+  deleteLastPost() {
+    this.store.dispatch(actionDeleteLastPost());
   }
 
   private createForm(): void {

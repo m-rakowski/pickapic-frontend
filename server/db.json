@@ -1,24 +1,9 @@
 {
   "posts": [
     {
-      "id": 1,
-      "title": "First post",
-      "content": "This is the first post"
-    },
-    {
-      "id": 2,
-      "title": "Second post",
-      "content": "And here goes another post"
-    },
-    {
-      "title": "1",
-      "content": "2",
-      "id": 3
-    },
-    {
-      "title": "Done",
-      "content": "Thing",
-      "id": 4
+      "title": "3333",
+      "content": "3333",
+      "id": 14
     }
   ]
 }
