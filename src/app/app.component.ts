@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { Post } from './model/post';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { PostsState } from './store/reducers';
-import { selectPostsAsArray } from './store/selectors';
+import { selectIsLoading, selectPostsAsArray } from './store/selectors';
 import { actionCreatePost, actionDeleteLastPost, actionGetAllPosts } from './store/actions';
 
 @Component({

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { EMPTY } from 'rxjs';
-import { catchError, map, mergeMap, tap, withLatestFrom } from 'rxjs/operators';
+import { catchError, exhaustMap, map, withLatestFrom } from 'rxjs/operators';
 import { PostService } from '../../services/post.service';
 import { Post } from '../../model/post';
 import {
@@ -10,6 +10,7 @@ import {
   actionDeleteLastPost,
   actionDeleteLastPostDone,
   actionDeleteNthPost,
+  actionDeleteNthPostError,
   actionGetAllPosts,
   actionGetAllPostsDone
 } from '../actions';
@@ -59,7 +60,7 @@ export class PostEffects {
       ofType(actionDeleteNthPost),
       exhaustMap((action) => this.postService.deletePostById(action.id)
         .pipe(
-          map((post: Post) => actionDeleteLastPostDone({post})),
+          map(() => actionDeleteLastPostDone({removedId: action.id})),
           catchError(() => EMPTY)
         )
       )

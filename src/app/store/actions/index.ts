@@ -12,4 +12,5 @@ export const actionDeleteNthPost = createAction('[Post] Delete Nth Post', props<
 export const actionDeleteNthPostDone = createAction('[Post] Delete Nth Post Done', props<{ post: Post }>());
 
 export const actionDeleteLastPost = createAction('[Post] Delete Last Post');
-export const actionDeleteLastPostDone = createAction('[Post] Delete Last Post Done', props<{ post: Post }>());
+export const actionDeleteLastPostDone = createAction('[Post] Delete Last Post Done', props<{ removedId: number }>());
+export const actionDeleteNthPostError = createAction('[Post] Delete Last Post Error');
