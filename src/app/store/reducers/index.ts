@@ -1,5 +1,13 @@
 import { createReducer, on } from '@ngrx/store';
-import { actionCreatePostDone, actionDeleteLastPost, actionDeleteNthPost, actionGetAllPostsDone } from '../actions';
+import {
+  actionCreatePost,
+  actionCreatePostDone,
+  actionDeleteLastPost,
+  actionDeleteLastPostDone,
+  actionDeleteNthPostError,
+  actionGetAllPosts,
+  actionGetAllPostsDone
+} from '../actions';
 import { Post } from '../../model/post';
 
 export interface PostsState {
@@ -14,6 +22,11 @@ export const initialState: PostsState = {
 
 export const postsReducer = createReducer<PostsState>(
   initialState,
+  on(actionGetAllPosts, (state) => {
+    const newState = JSON.parse(JSON.stringify(state));
+    newState.loading = true;
+    return newState;
+  }),
   on(actionGetAllPostsDone, (state, action) => {
     console.log('actionGetAllPostsDone', state, action);
     const newEntities: { [id: number]: Post } = {};
@@ -22,26 +35,41 @@ export const postsReducer = createReducer<PostsState>(
       loading: false,
       entities: newEntities
     };
-
+    newState.loading = false;
     console.log('newState', newState);
     return newState;
   }),
-
+  on(actionCreatePost, (state, action) => {
+    const newState = JSON.parse(JSON.stringify(state));
+    newState.loading = true;
+    return newState;
+  }),
   on(actionCreatePostDone, (state, action) => {
     console.log('actionCreatePostDone', state, action);
     const newState = JSON.parse(JSON.stringify(state));
     newState.entities[action.post.id] = action.post;
-
+    newState.loading = false;
     console.log('newState', newState);
     return newState;
   }),
-
-  on(actionDeleteNthPost, (state, action) => {
-    console.log('actionDeleteLastPost', state, action);
+  on(actionDeleteLastPost, (state) => {
     const newState = JSON.parse(JSON.stringify(state));
-    delete newState.entities[action.id];
+    newState.loading = true;
+    return newState;
+  }),
+  on(actionDeleteNthPostError, (state) => {
+    const newState = JSON.parse(JSON.stringify(state));
+    newState.loading = false;
+    return newState;
+  }),
+  on(actionDeleteLastPostDone, (state, action) => {
+    console.log('actionDeleteLastPostDone', state, action);
+    const newState = JSON.parse(JSON.stringify(state));
 
-    console.log('newState', newState);
+    console.log('actionDeleteLastPostDone newState', newState);
+    delete newState.entities[action.removedId];
+    newState.loading = false;
+    console.log('actionDeleteLastPostDone newState AFTER deleting', newState);
     return newState;
   })
 );

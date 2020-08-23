@@ -15,6 +15,7 @@ import { actionCreatePost, actionDeleteLastPost, actionGetAllPosts } from './sto
 export class AppComponent implements OnInit {
 
   posts$: Observable<Post[]>;
+  isLoading$: Observable<boolean>;
   formGroup: FormGroup;
 
   constructor(private store: Store<PostsState>) {
@@ -23,6 +24,7 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     this.createForm();
     this.posts$ = this.store.select(selectPostsAsArray);
+    this.isLoading$ = this.store.select(selectIsLoading);
     this.getAllPosts();
   }
 

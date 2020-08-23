@@ -16,3 +16,10 @@ export const selectLastPost = createSelector(
     return state.entities[lastId];
   }
 );
+
+export const selectIsLoading = createSelector(
+  getPostsState,
+  (state: PostsState) => {
+    return state.loading;
+  }
+);

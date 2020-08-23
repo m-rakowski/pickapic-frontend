@@ -26,8 +26,7 @@ export class PostEffects {
   getAllPosts$ = createEffect(() => this.actions$
     .pipe(
       ofType(actionGetAllPosts),
-      tap(x => console.log(x)),
-      mergeMap(() => this.postService.getAll()
+      exhaustMap(() => this.postService.getAll()
         .pipe(
           map((posts: Post[]) => actionGetAllPostsDone({posts})),
           catchError(() => EMPTY)
@@ -35,13 +34,10 @@ export class PostEffects {
       )
     )
   );
-  addPost$ = createEffect(() => this.actions$
+  createPost$ = createEffect(() => this.actions$
     .pipe(
       ofType(actionCreatePost),
-      tap((x) => {
-        console.log('effect addPost caught an action of type createPost, the action is', x);
-      }),
-      mergeMap((action) => this.postService.createPost(action.post)
+      exhaustMap((action) => this.postService.createPost(action.post)
         .pipe(
           map((post: Post) => actionCreatePostDone({post})),
           catchError(() => EMPTY)
@@ -53,13 +49,15 @@ export class PostEffects {
     .pipe(
       ofType(actionDeleteLastPost),
       withLatestFrom(this.store$.select(selectLastPost)),
-      map(([action, post]) => actionDeleteNthPost({id: post.id}))
+      map(([_, post]) => {
+        return post ? actionDeleteNthPost({id: post.id}) : actionDeleteNthPostError();
+      })
     )
   );
   deleteNthPost$ = createEffect(() => this.actions$
     .pipe(
       ofType(actionDeleteNthPost),
-      mergeMap((action) => this.postService.deletePostById(action.id)
+      exhaustMap((action) => this.postService.deletePostById(action.id)
         .pipe(
           map((post: Post) => actionDeleteLastPostDone({post})),
           catchError(() => EMPTY)
@@ -74,5 +72,4 @@ export class PostEffects {
     private postService: PostService
   ) {
   }
-
 }

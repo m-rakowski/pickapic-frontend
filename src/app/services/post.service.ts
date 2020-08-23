@@ -20,10 +20,16 @@ export class PostService {
   }
 
   createPost(post: Post): Observable<Post> {
-    return this.httpClient.post<Post>('http://localhost:3000/posts', post);
+    return this.httpClient.post<Post>('http://localhost:3000/posts', post)
+      .pipe(
+        delay(1000)
+      );
   }
 
   deletePostById(id: number): Observable<any> {
-    return this.httpClient.delete<any>('http://localhost:3000/posts/' + id);
+    return this.httpClient.delete<any>('http://localhost:3000/posts/' + id)
+      .pipe(
+        delay(1000)
+      );
   }
 }
