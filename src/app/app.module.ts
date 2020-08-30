@@ -7,26 +7,53 @@ import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { EffectsModule } from '@ngrx/effects';
 import { PostEffects } from './store/effects';
-import { HttpClientModule } from '@angular/common/http';
-import { ReactiveFormsModule } from '@angular/forms';
 import { postsReducer } from './store/reducers';
+import { AngularFireModule } from '@angular/fire';
+import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { AngularFireAuthModule } from '@angular/fire/auth';
+import { AngularFireStorageModule } from '@angular/fire/storage';
+import { environment } from '../environments/environment';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
+
+export function createTranslateLoader(http: HttpClient) {
+  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+}
+
+const config = {};
+
+const firebase = [
+  AngularFireModule.initializeApp(environment.firebaseConfig),
+  AngularFirestoreModule,
+  AngularFireAuthModule,
+  AngularFireStorageModule,
+];
+
+const ngrx = [
+  StoreModule.forRoot({ posts: postsReducer }),
+  StoreDevtoolsModule.instrument({ maxAge: 10 }),
+  EffectsModule.forRoot([PostEffects]),
+];
 
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
+  declarations: [AppComponent],
   imports: [
-    ReactiveFormsModule,
     HttpClientModule,
     BrowserModule,
     AppRoutingModule,
-    StoreModule.forRoot({posts: postsReducer}),
-    StoreDevtoolsModule.instrument({maxAge: 10}),
-    EffectsModule.forRoot([PostEffects])
+    BrowserModule,
+    [firebase],
+    [ngrx],
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: createTranslateLoader,
+        deps: [HttpClient],
+      },
+    }),
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule {
-}
-
+export class AppModule {}

@@ -1,6 +1,9 @@
 import { TestBed } from '@angular/core/testing';
 import { PostService } from './post.service';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import {
+  HttpClientTestingModule,
+  HttpTestingController,
+} from '@angular/common/http/testing';
 import { Post } from '../model/post';
 
 describe('PostService', () => {
@@ -9,11 +12,10 @@ describe('PostService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule]
+      imports: [HttpClientTestingModule],
     });
     service = TestBed.inject(PostService);
     httpMock = TestBed.inject(HttpTestingController);
-
   });
 
   afterEach(() => {
@@ -21,20 +23,20 @@ describe('PostService', () => {
   });
 
   it('should return 2 posts', () => {
-    const postsReturnedByApi: Post [] = [
+    const postsReturnedByApi: Post[] = [
       {
         id: 1,
         title: 'First post',
-        content: 'Famous Blogger'
+        content: 'Famous Blogger',
       },
       {
         id: 2,
         title: 'Second post',
-        content: 'Famous Blogger'
-      }
+        content: 'Famous Blogger',
+      },
     ];
 
-    service.getAll().subscribe(postsReturnedByService => {
+    service.getAll().subscribe((postsReturnedByService) => {
       expect(postsReturnedByService.length).toBe(2);
       expect(postsReturnedByService).toEqual(postsReturnedByApi);
     });
@@ -48,10 +50,10 @@ describe('PostService', () => {
     const expectedPost: Post = {
       id: 3,
       title: 'Third post',
-      content: 'Famous Blogger'
+      content: 'Famous Blogger',
     };
 
-    service.createPost(expectedPost).subscribe(post => {
+    service.createPost(expectedPost).subscribe((post) => {
       expect(post).toBe(expectedPost);
     });
 
@@ -64,10 +66,10 @@ describe('PostService', () => {
     const expectedPost: Post = {
       id: 3,
       title: 'Third post',
-      content: 'Famous Blogger'
+      content: 'Famous Blogger',
     };
 
-    service.deletePostById(3).subscribe(post => {
+    service.deletePostById(3).subscribe((post) => {
       expect(post).toBe(expectedPost);
     });
 

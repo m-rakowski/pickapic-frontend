@@ -1,25 +1,2 @@
-<button (click)="getAllPosts()">get_all_posts</button>
-<button (click)="deleteLastPost()">delete_last_post</button>
-
-
-<form (submit)="createPost()" [formGroup]="formGroup">
-  <label for="title">Title:</label>
-  <input [formControl]="formControl('title')" id="title" name="title" type="text"/>
-  <label for="content">Content:</label>
-  <input [formControl]="formControl('content')" id="content" name="content" type="text"/>
-
-  <div>
-    <button type="submit">Submit</button>
-  </div>
-</form>
-
-<ng-container *ngIf="(posts$|async).length>0; else noPosts">
-  <article *ngFor="let post of posts$|async">
-    <h2>{{post.title}}</h2>
-    <span>{{post.content}}</span>
-  </article>
-</ng-container>
-<ng-template #noPosts>
-  <div>no_posts_found</div>
-</ng-template>
-<div *ngIf="isLoading$ | async">Loading...</div>
+<header>{{ 'welcome' | translate }}</header>
+<router-outlet></router-outlet>

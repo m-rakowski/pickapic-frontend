@@ -1,55 +1,18 @@
-import { Component, OnInit } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
-import { Post } from './model/post';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { PostsState } from './store/reducers';
-import { selectIsLoading, selectPostsAsArray } from './store/selectors';
-import { actionCreatePost, actionDeleteLastPost, actionGetAllPosts } from './store/actions';
+import { Component } from '@angular/core';
+
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
+  constructor(translate: TranslateService) {
+    // this language will be used as a fallback when a translation isn't found in the current language
+    translate.setDefaultLang('en');
 
-  posts$: Observable<Post[]>;
-  isLoading$: Observable<boolean>;
-  formGroup: FormGroup;
-
-  constructor(private store: Store<PostsState>) {
-  }
-
-  ngOnInit(): void {
-    this.createForm();
-    this.posts$ = this.store.select(selectPostsAsArray);
-    this.isLoading$ = this.store.select(selectIsLoading);
-    this.getAllPosts();
-  }
-
-  createPost(): void {
-    if (this.formGroup.valid) {
-      this.store.dispatch(actionCreatePost({post: this.formGroup.value}));
-    }
-  }
-
-  getAllPosts() {
-    this.store.dispatch(actionGetAllPosts());
-  }
-
-  formControl(controlName: string): FormControl {
-    return this.formGroup.get(controlName) as FormControl;
-  }
-
-  deleteLastPost() {
-    this.store.dispatch(actionDeleteLastPost());
-  }
-
-  private createForm(): void {
-    this.formGroup = new FormGroup({
-      title: new FormControl('', [Validators.required]),
-      content: new FormControl('', [Validators.required]),
-    });
+    // the lang to use, if the lang isn't available, it will use the current loader to get them
+    translate.use('en');
   }
 }

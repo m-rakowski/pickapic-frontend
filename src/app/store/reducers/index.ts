@@ -6,9 +6,9 @@ import {
   actionDeleteLastPostDone,
   actionDeleteNthPostError,
   actionGetAllPosts,
-  actionGetAllPostsDone
+  actionGetAllPostsDone,
 } from '../actions';
-import { Post } from '../../model/post';
+import { Post } from '../../posts/model/post';
 
 export interface PostsState {
   entities: { [id: number]: Post };
@@ -30,10 +30,10 @@ export const postsReducer = createReducer<PostsState>(
   on(actionGetAllPostsDone, (state, action) => {
     console.log('actionGetAllPostsDone', state, action);
     const newEntities: { [id: number]: Post } = {};
-    action.posts.forEach(post => newEntities[post.id] = post);
+    action.posts.forEach((post) => (newEntities[post.id] = post));
     const newState: PostsState = {
       loading: false,
-      entities: newEntities
+      entities: newEntities,
     };
     newState.loading = false;
     console.log('newState', newState);

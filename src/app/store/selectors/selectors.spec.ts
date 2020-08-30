@@ -1,9 +1,8 @@
-import { Post } from '../../model/post';
+import { Post } from '../../posts/model/post';
 import { selectLastPost, selectPostsAsArray } from './index';
 import { PostsState } from '../reducers';
 
 describe('Posts selectors', () => {
-
   describe('selectPostsAsArray', () => {
     it('should return posts as an array', () => {
       expect(selectPostsAsArray.projector(postsState)).toEqual(postsAsArray);
@@ -12,7 +11,6 @@ describe('Posts selectors', () => {
     it('should return an empty array', () => {
       expect(selectPostsAsArray.projector(emptyPostsState)).toEqual([]);
     });
-
   });
 
   describe('getLastPost', () => {
@@ -20,7 +18,7 @@ describe('Posts selectors', () => {
       expect(selectLastPost.projector(postsState)).toEqual({
         id: 2,
         content: 'Second post',
-        title: 'Title 2'
+        title: 'Title 2',
       });
     });
 
@@ -29,20 +27,22 @@ describe('Posts selectors', () => {
     });
   });
 
-
-  const postsAsArray: Post[] = [{
-    id: 1,
-    content: 'First post',
-    title: 'Title 1'
-  }, {
-    id: 2,
-    content: 'Second post',
-    title: 'Title 2'
-  }];
+  const postsAsArray: Post[] = [
+    {
+      id: 1,
+      content: 'First post',
+      title: 'Title 1',
+    },
+    {
+      id: 2,
+      content: 'Second post',
+      title: 'Title 2',
+    },
+  ];
 
   const emptyPostsState: PostsState = {
     loading: false,
-    entities: {}
+    entities: {},
   };
 
   const postsState: PostsState = {
@@ -51,14 +51,13 @@ describe('Posts selectors', () => {
       1: {
         id: 1,
         content: 'First post',
-        title: 'Title 1'
+        title: 'Title 1',
       },
       2: {
         id: 2,
         content: 'Second post',
-        title: 'Title 2'
-      }
-    }
+        title: 'Title 2',
+      },
+    },
   };
-
 });
