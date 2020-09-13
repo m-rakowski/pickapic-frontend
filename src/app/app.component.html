@@ -1,2 +1,24 @@
-<header>{{ 'welcome' | translate }}</header>
+<mat-toolbar>
+  <button
+    mat-icon-button
+    class="example-icon"
+    aria-label="Example icon-button with menu icon"
+  >
+    <mat-icon>menu</mat-icon>
+  </button>
+  <span>My App</span>
+  <span class="user-profile" *ngIf="user$ | async">{{
+    (user$ | async).email
+  }}</span>
+  <button
+    mat-icon-button
+    [matTooltip]="'buttons.signOut' | translate"
+    aria-label="Button that displays a tooltip that hides when scrolled out of the container"
+    class="example-icon favorite-icon"
+    (click)="signOut()"
+    *ngIf="user$ | async"
+  >
+    <mat-icon>exit_to_app</mat-icon>
+  </button>
+</mat-toolbar>
 <router-outlet></router-outlet>

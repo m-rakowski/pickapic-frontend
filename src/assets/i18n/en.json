@@ -1,3 +1,8 @@
 {
-  "welcome": "Welcome"
+  "buttons.signIn": "Sign in",
+  "buttons.signOut": "Sign out",
+  "buttons.signUp": "Sign up",
+  "email": "E-mail",
+  "password": "Password",
+  "userNameOrEmail": "User name or e-mail"
 }

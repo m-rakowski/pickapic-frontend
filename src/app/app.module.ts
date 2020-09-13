@@ -16,12 +16,15 @@ import { environment } from '../environments/environment';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { ReactiveFormsModule } from '@angular/forms';
+import { SignInComponent } from './signin/sign-in.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MaterialModule } from './shared/material/material.module';
+import { SignUpComponent } from './signup/sign-up.component';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
-
-const config = {};
 
 const firebase = [
   AngularFireModule.initializeApp(environment.firebaseConfig),
@@ -37,8 +40,10 @@ const ngrx = [
 ];
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, SignInComponent, SignUpComponent],
   imports: [
+    ReactiveFormsModule,
+    MaterialModule,
     HttpClientModule,
     BrowserModule,
     AppRoutingModule,
@@ -52,6 +57,7 @@ const ngrx = [
         deps: [HttpClient],
       },
     }),
+    BrowserAnimationsModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
