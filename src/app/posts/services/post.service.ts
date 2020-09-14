@@ -1,30 +1,29 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Post } from '../model/post';
-import { Observable } from 'rxjs';
-import { delay } from 'rxjs/operators';
-
+import { from, Observable } from 'rxjs';
+import { AngularFirestore } from '@angular/fire/firestore';
+import { DocumentReference } from '@angular/fire/firestore/interfaces';
+import { firestore } from 'firebase';
 @Injectable({
   providedIn: 'root',
 })
 export class PostService {
-  constructor(private httpClient: HttpClient) {}
+  constructor(private httpClient: HttpClient, private angularFirestore: AngularFirestore) {}
 
   getAll(): Observable<Post[]> {
-    return this.httpClient
-      .get<Post[]>('http://localhost:3000/posts')
-      .pipe(delay(1000));
+    return this.angularFirestore.collection<Post>('posts').valueChanges({ idField: 'id' });
   }
 
-  createPost(post: Post): Observable<Post> {
-    return this.httpClient
-      .post<Post>('http://localhost:3000/posts', post)
-      .pipe(delay(1000));
+  createPost(post: Post): Observable<DocumentReference> {
+    return from(this.angularFirestore.collection<Post>('posts').add({ ...post, created: firestore.Timestamp.now() }));
   }
 
-  deletePostById(id: number): Observable<any> {
-    return this.httpClient
-      .delete<any>('http://localhost:3000/posts/' + id)
-      .pipe(delay(1000));
+  deletePostById(id: string): Observable<void> {
+    return from(this.angularFirestore.doc('posts/' + id).delete());
+  }
+
+  updatePost(post: Post): Observable<void> {
+    return from(this.angularFirestore.doc('posts/' + post.id).update(post));
   }
 }

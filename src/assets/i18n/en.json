@@ -1,8 +1,10 @@
 {
   "buttons.signIn": "Sign in",
+  "buttons.signInWithGoogle": "Sign in with Google",
   "buttons.signOut": "Sign out",
   "buttons.signUp": "Sign up",
   "email": "E-mail",
+  "noPostsFound": "You've reached the end of the Internet",
   "password": "Password",
   "userNameOrEmail": "User name or e-mail"
 }

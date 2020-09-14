@@ -39,7 +39,7 @@ describe('UserEffects', () => {
     fit('should return an actionGetAllPostsDone action', () => {
       const mockedPosts: Post[] = [
         {
-          id: 1,
+          id: '1',
           title: 'First post title',
           content: 'Fist post content',
         },

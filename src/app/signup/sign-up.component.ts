@@ -24,19 +24,13 @@ export class SignUpComponent implements OnInit {
   ngOnInit(): void {
     this.signUpFormGroup = new FormGroup({
       email: new FormControl('', [Validators.required, Validators.email]),
-      password: new FormControl('', [
-        Validators.required,
-        Validators.minLength(6),
-      ]),
+      password: new FormControl('', [Validators.required, Validators.minLength(6)]),
     });
   }
 
   signUp(): void {
     this.angularFireAuth
-      .createUserWithEmailAndPassword(
-        this.signUpFormGroup.get('email').value,
-        this.signUpFormGroup.get('password').value
-      )
+      .createUserWithEmailAndPassword(this.signUpFormGroup.get('email').value, this.signUpFormGroup.get('password').value)
       .then((result) => {
         console.log(result);
         this.router.navigate(['']);

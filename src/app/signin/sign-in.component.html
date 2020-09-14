@@ -4,12 +4,7 @@
 
     <mat-form-field>
       <mat-label>{{ 'email' | translate }}</mat-label>
-      <input
-        matInput
-        formControlName="email"
-        placeholder="Ex. pat@example.com"
-        email
-      />
+      <input matInput formControlName="email" placeholder="Ex. pat@example.com" email />
     </mat-form-field>
     <mat-form-field>
       <mat-label>{{ 'password' | translate }}</mat-label>
@@ -18,6 +13,9 @@
     <footer class="sign-in-buttons-footer">
       <button mat-stroked-button color="primary" type="submit">
         {{ 'buttons.signIn' | translate }}
+      </button>
+      <button mat-stroked-button color="primary" type="button" (click)="signInWithGoogle()">
+        {{ 'buttons.signInWithGoogle' | translate }}
       </button>
       <p>No account yet? <a routerLink="/sign-up" mat-button>Sign up</a></p>
     </footer>

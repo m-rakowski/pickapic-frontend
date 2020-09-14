@@ -8,16 +8,20 @@ const routes: Routes = [
   {
     path: 'sign-in',
     component: SignInComponent,
+    canActivate: [AuthGuard],
+    data: { routeForGuests: true },
   },
   {
     path: 'sign-up',
     component: SignUpComponent,
+    canActivate: [AuthGuard],
+    data: { routeForGuests: true },
   },
   {
     path: '',
-    loadChildren: () =>
-      import('./posts/posts.module').then((m) => m.PostsModule),
+    loadChildren: () => import('./posts/posts.module').then((m) => m.PostsModule),
     canActivate: [AuthGuard],
+    data: { routeForGuests: false },
   },
 ];
 

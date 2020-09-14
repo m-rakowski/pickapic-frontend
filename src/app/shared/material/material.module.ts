@@ -7,6 +7,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatCardModule } from '@angular/material/card';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 const components = [
   MatInputModule,
@@ -16,6 +17,7 @@ const components = [
   MatToolbarModule,
   MatCardModule,
   MatTooltipModule,
+  MatProgressSpinnerModule,
 ];
 
 @NgModule({

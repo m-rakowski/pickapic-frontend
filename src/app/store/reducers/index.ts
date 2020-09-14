@@ -23,9 +23,7 @@ export const initialState: PostsState = {
 export const postsReducer = createReducer<PostsState>(
   initialState,
   on(actionGetAllPosts, (state) => {
-    const newState = JSON.parse(JSON.stringify(state));
-    newState.loading = true;
-    return newState;
+    return { ...state, loading: true };
   }),
   on(actionGetAllPostsDone, (state, action) => {
     console.log('actionGetAllPostsDone', state, action);
@@ -40,9 +38,7 @@ export const postsReducer = createReducer<PostsState>(
     return newState;
   }),
   on(actionCreatePost, (state, action) => {
-    const newState = JSON.parse(JSON.stringify(state));
-    newState.loading = true;
-    return newState;
+    return { ...state, loading: true };
   }),
   on(actionCreatePostDone, (state, action) => {
     console.log('actionCreatePostDone', state, action);
@@ -53,14 +49,10 @@ export const postsReducer = createReducer<PostsState>(
     return newState;
   }),
   on(actionDeleteLastPost, (state) => {
-    const newState = JSON.parse(JSON.stringify(state));
-    newState.loading = true;
-    return newState;
+    return { ...state, loading: true };
   }),
   on(actionDeleteNthPostError, (state) => {
-    const newState = JSON.parse(JSON.stringify(state));
-    newState.loading = false;
-    return newState;
+    return { ...state, loading: false };
   }),
   on(actionDeleteLastPostDone, (state, action) => {
     console.log('actionDeleteLastPostDone', state, action);

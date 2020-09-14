@@ -1,24 +1,20 @@
-<div class="sign-in-container">
-  <form [formGroup]="signUpFormGroup" (submit)="signUp()" class="sign-in-form">
+<div class="sign-up-container">
+  <form [formGroup]="signUpFormGroup" (submit)="signUp()" class="sign-up-form">
     <p class="error-message" *ngIf="errorMessage">{{ errorMessage }}</p>
 
     <mat-form-field>
       <mat-label>{{ 'email' | translate }}</mat-label>
-      <input
-        matInput
-        formControlName="email"
-        placeholder="Ex. pat@example.com"
-        email
-      />
+      <input matInput formControlName="email" placeholder="Ex. pat@example.com" email />
     </mat-form-field>
     <mat-form-field>
       <mat-label>{{ 'password' | translate }}</mat-label>
       <input matInput formControlName="password" type="password" />
     </mat-form-field>
-    <footer class="sign-in-buttons-footer">
+    <footer class="sign-up-buttons-footer">
       <button mat-stroked-button color="primary" type="submit">
         {{ 'buttons.signUp' | translate }}
       </button>
+      <p>Already have an account? <a routerLink="/sign-in" mat-button>Sign in</a></p>
     </footer>
   </form>
 </div>
