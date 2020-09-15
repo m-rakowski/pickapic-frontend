@@ -1,25 +1,86 @@
 <div class="posts-container">
   <article>
-    <p>Add a post</p>
     <form (submit)="createPost()" [formGroup]="formGroup">
-      <label for="title">Title:</label>
-      <input [formControl]="formControl('title')" id="title" name="title" type="text" />
-      <label for="content">Content:</label>
-      <input [formControl]="formControl('content')" id="content" name="content" type="text" />
-
-      <div>
-        <button mat-stroked-button type="submit">Submit</button>
+      <mat-form-field>
+        <mat-label>{{ 'question' | translate }}</mat-label>
+        <input matInput formControlName="question" />
+      </mat-form-field>
+      <div class="left-right">
+        <div class="photo1-container">
+          <mat-form-field>
+            <mat-label>Label for pic 1</mat-label>
+            <input matInput formControlName="title1" id="title1" name="title1" type="text" />
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Description for pic 1</mat-label>
+            <input matInput formControlName="description1" id="description1" name="description1" type="text" />
+          </mat-form-field>
+          <div>
+            <label for="image1">Image 1:</label>
+            <input type="file" (change)="uploadPhoto1($event)" accept=".png,.jpg" id="image1" />
+            <mat-progress-spinner class="upload-progress-image1" [value]="uploadProgressPhoto1$ | async"></mat-progress-spinner>
+          </div>
+        </div>
+        <div class="photo2-container">
+          <mat-form-field>
+            <mat-label>Label for pic 2</mat-label>
+            <input matInput formControlName="title2" id="title2" name="title2" type="text" />
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Description for pic 2</mat-label>
+            <input matInput formControlName="description2" id="description2" name="description2" type="text" />
+          </mat-form-field>
+          <div>
+            <label for="image2">Image 2:</label>
+            <input type="file" (change)="uploadPhoto2($event)" accept=".png,.jpg" id="image2" />
+            <mat-progress-spinner class="upload-progress-image2" [value]="uploadProgressPhoto2$ | async"></mat-progress-spinner>
+          </div>
+        </div>
       </div>
+      <button mat-stroked-button type="submit">Post</button>
     </form>
   </article>
   <ng-container *ngIf="(posts$ | async).length > 0; else noPosts">
-    <article *ngFor="let post of posts$ | async">
-      <h2>{{ post.title }}</h2>
-      <span>{{ post.content }}</span>
-    </article>
+    <mat-card class="example-card" *ngFor="let post of posts$ | async">
+      <mat-card-header>
+        <div mat-card-avatar class="example-header-image"></div>
+        <mat-card-title
+          ><p>{{ post.question }}</p></mat-card-title
+        >
+        <mat-card-subtitle>John Doe</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content class="left-right">
+        <mat-card class="example-card">
+          <mat-card-header>
+            <mat-card-title
+              ><p>{{ post.title1 }}</p></mat-card-title
+            >
+            <mat-card-subtitle>{{ post.description1 }}</mat-card-subtitle>
+          </mat-card-header>
+          <img mat-card-image [src]="post.photo1Url" alt="Photo of a Shiba Inu" />
+          <mat-card-content>
+            <!--            <p>{{ post.description1 }}</p>-->
+          </mat-card-content>
+        </mat-card>
+        <mat-card class="example-card">
+          <mat-card-header>
+            <mat-card-title
+              ><p>{{ post.title2 }}</p></mat-card-title
+            >
+            <mat-card-subtitle>{{ post.description2 }}</mat-card-subtitle>
+          </mat-card-header>
+          <img mat-card-image [src]="post.photo2Url" alt="Photo of a Shiba Inu" />
+          <mat-card-content>
+            <!--            <p>{{ post.description2 }}</p>-->
+          </mat-card-content>
+        </mat-card>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-button>LIKE</button>
+        <button mat-button>SHARE</button>
+      </mat-card-actions>
+    </mat-card>
   </ng-container>
-  <!--<button (click)="getAllPosts()">get_all_posts</button>-->
-  <!--<button (click)="deleteLastPost()">delete_last_post</button>-->
 </div>
 <ng-template #noPosts>
   <p>{{ 'noPostsFound' | translate }}</p>
