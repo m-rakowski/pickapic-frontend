@@ -11,3 +11,9 @@ body {
 button {
   text-transform: uppercase;
 }
+
+.mat-form-field {
+  width: 100% !important;
+  display: block;
+  margin-bottom: 20px;
+}

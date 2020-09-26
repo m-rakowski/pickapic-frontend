@@ -2,10 +2,10 @@ import { provideMockActions } from '@ngrx/effects/testing';
 import { TestBed } from '@angular/core/testing';
 import { cold, hot } from 'jasmine-marbles';
 import { Observable } from 'rxjs';
-import { PostEffects } from './index';
+import { PostEffects } from './effects';
 import { PostService } from '../../posts/services/post.service';
 import { Post } from '../../posts/model/post';
-import { actionGetAllPosts, actionGetAllPostsDone } from '../actions';
+import { actionGetAllPosts, actionGetAllPostsDone } from '../actions/actions';
 import { Action } from '@ngrx/store';
 
 describe('UserEffects', () => {

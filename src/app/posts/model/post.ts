@@ -1,12 +1,10 @@
-import { firestore } from 'firebase';
+import { Image } from './image';
+import { User } from './user';
+
 export interface Post {
-  id: string;
-  created?: firestore.Timestamp;
-  question: string;
-  title1: string;
-  title2: string;
-  description1: string;
-  description2: string;
-  photo1Url: string;
-  photo2Url: string;
+  id?: string;
+  additionDate?: number;
+  question?: string;
+  images: Image[];
+  addedByUser?: User;
 }

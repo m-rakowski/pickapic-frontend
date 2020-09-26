@@ -1,16 +1,16 @@
 <mat-toolbar>
-  <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
+  <button aria-label="Example icon-button with menu icon" class="example-icon" mat-icon-button>
     <mat-icon>menu</mat-icon>
   </button>
   <span>My App</span>
-  <span class="user-profile" *ngIf="user$ | async as user">{{ user.email }}</span>
+  <span *ngIf="authService.user$ | async as user" class="user-profile">{{ user.email }}</span>
   <button
-    mat-icon-button
+    (click)="signOut()"
+    *ngIf="authService.user$ | async"
     [matTooltip]="'buttons.signOut' | translate"
     aria-label="Button that displays a tooltip that hides when scrolled out of the container"
     class="example-icon favorite-icon"
-    (click)="signOut()"
-    *ngIf="user$ | async"
+    mat-icon-button
   >
     <mat-icon>exit_to_app</mat-icon>
   </button>

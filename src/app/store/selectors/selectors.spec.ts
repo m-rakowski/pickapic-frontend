@@ -1,6 +1,6 @@
 import { Post } from '../../posts/model/post';
-import { selectLastPost, selectPostsAsArray } from './index';
-import { PostsState } from '../reducers';
+import { selectLastPost, selectPostsAsArray } from './selectors';
+import { PostsState } from '../reducers/reducers';
 
 describe('Posts selectors', () => {
   describe('selectPostsAsArray', () => {

@@ -3,8 +3,6 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { AngularFireAuth } from '@angular/fire/auth';
-import { auth } from 'firebase/app';
 
 @Component({
   selector: 'app-sign-in',
@@ -16,12 +14,7 @@ export class SignInComponent implements OnInit {
   isSignUpFormVisible: boolean;
   signInFormGroup: FormGroup;
 
-  constructor(
-    private authService: AuthService,
-    private angularFirestore: AngularFirestore,
-    private router: Router,
-    private angularFireAuth: AngularFireAuth
-  ) {}
+  constructor(private authService: AuthService, private angularFirestore: AngularFirestore, private router: Router) {}
 
   ngOnInit(): void {
     this.signInFormGroup = new FormGroup({
@@ -44,8 +37,8 @@ export class SignInComponent implements OnInit {
   }
 
   signInWithGoogle(): void {
-    this.angularFireAuth
-      .signInWithPopup(new auth.GoogleAuthProvider())
+    this.authService
+      .signInWithGoogle()
       .then((result) => {
         this.router.navigate(['']);
       })

@@ -1,9 +1,5 @@
-import { initialState, postsReducer, PostsState } from './index';
-import {
-  actionCreatePostDone,
-  actionDeleteNthPost,
-  actionGetAllPostsDone,
-} from '../actions';
+import { initialState, postsReducer, PostsState } from './reducers';
+import { actionCreatePostDone, actionDeleteNthPost, actionGetAllPostsDone } from '../actions/actions';
 import { Post } from '../../posts/model/post';
 
 describe('Posts Reducer', () => {

@@ -1,45 +1,28 @@
+<div>{{ this.formGroup.value | json }}</div>
 <div class="posts-container">
-  <article>
-    <form (submit)="createPost()" [formGroup]="formGroup">
-      <mat-form-field>
-        <mat-label>{{ 'question' | translate }}</mat-label>
-        <input matInput formControlName="question" />
-      </mat-form-field>
-      <div class="left-right">
-        <div class="photo1-container">
-          <mat-form-field>
-            <mat-label>Label for pic 1</mat-label>
-            <input matInput formControlName="title1" id="title1" name="title1" type="text" />
-          </mat-form-field>
-          <mat-form-field>
-            <mat-label>Description for pic 1</mat-label>
-            <input matInput formControlName="description1" id="description1" name="description1" type="text" />
-          </mat-form-field>
-          <div>
-            <label for="image1">Image 1:</label>
-            <input type="file" (change)="uploadPhoto1($event)" accept=".png,.jpg" id="image1" />
-            <mat-progress-spinner class="upload-progress-image1" [value]="uploadProgressPhoto1$ | async"></mat-progress-spinner>
-          </div>
-        </div>
-        <div class="photo2-container">
-          <mat-form-field>
-            <mat-label>Label for pic 2</mat-label>
-            <input matInput formControlName="title2" id="title2" name="title2" type="text" />
-          </mat-form-field>
-          <mat-form-field>
-            <mat-label>Description for pic 2</mat-label>
-            <input matInput formControlName="description2" id="description2" name="description2" type="text" />
-          </mat-form-field>
-          <div>
-            <label for="image2">Image 2:</label>
-            <input type="file" (change)="uploadPhoto2($event)" accept=".png,.jpg" id="image2" />
-            <mat-progress-spinner class="upload-progress-image2" [value]="uploadProgressPhoto2$ | async"></mat-progress-spinner>
-          </div>
+  <form (submit)="createPost()" [formGroup]="formGroup" class="post-creation-form">
+    <mat-form-field>
+      <mat-label>{{ 'question' | translate }}</mat-label>
+      <input matInput formControlName="question" />
+    </mat-form-field>
+    <div class="left-right">
+      <div class="image1-container">
+        <div>
+          <label for="image1">{{ 'image' | translate }} 1</label>
+          <input type="file" (change)="uploadImage(0, $event)" accept=".png,.jpg" id="image1" />
+          <mat-progress-spinner class="upload-progress-image1" [value]="uploadProgressImage1$ | async"></mat-progress-spinner>
         </div>
       </div>
-      <button mat-stroked-button type="submit">Post</button>
-    </form>
-  </article>
+      <div class="image2-container">
+        <div>
+          <label for="image1">{{ 'image' | translate }} 2</label>
+          <input type="file" (change)="uploadImage(1, $event)" accept=".png,.jpg" id="image2" />
+          <mat-progress-spinner class="upload-progress-image2" [value]="uploadProgressImage2$ | async"></mat-progress-spinner>
+        </div>
+      </div>
+    </div>
+    <button mat-stroked-button type="submit">{{ 'post' | translate }}</button>
+  </form>
   <ng-container *ngIf="(posts$ | async).length > 0; else noPosts">
     <mat-card class="example-card" *ngFor="let post of posts$ | async">
       <mat-card-header>
@@ -47,36 +30,15 @@
         <mat-card-title
           ><p>{{ post.question }}</p></mat-card-title
         >
-        <mat-card-subtitle>John Doe</mat-card-subtitle>
+        <mat-card-subtitle>{{ post.addedByUser.email }}</mat-card-subtitle>
       </mat-card-header>
       <mat-card-content class="left-right">
-        <mat-card class="example-card">
-          <mat-card-header>
-            <mat-card-title
-              ><p>{{ post.title1 }}</p></mat-card-title
-            >
-            <mat-card-subtitle>{{ post.description1 }}</mat-card-subtitle>
-          </mat-card-header>
-          <img mat-card-image [src]="post.photo1Url" alt="Photo of a Shiba Inu" />
-          <mat-card-content>
-            <!--            <p>{{ post.description1 }}</p>-->
-          </mat-card-content>
-        </mat-card>
-        <mat-card class="example-card">
-          <mat-card-header>
-            <mat-card-title
-              ><p>{{ post.title2 }}</p></mat-card-title
-            >
-            <mat-card-subtitle>{{ post.description2 }}</mat-card-subtitle>
-          </mat-card-header>
-          <img mat-card-image [src]="post.photo2Url" alt="Photo of a Shiba Inu" />
-          <mat-card-content>
-            <!--            <p>{{ post.description2 }}</p>-->
-          </mat-card-content>
-        </mat-card>
+        <div class="thumbs-up" (click)="clickNthImage(i, post)" *ngFor="let image of post.images; let i = index">
+          <img [src]="post.images[i].url" alt="First image uploaded by user {{ post.addedByUser.email }}" />
+          <span class="thumbs-up-counter"> <mat-icon>thumb_up</mat-icon> {{ getVoteCount(post, i) }}</span>
+        </div>
       </mat-card-content>
       <mat-card-actions>
-        <button mat-button>LIKE</button>
         <button mat-button>SHARE</button>
       </mat-card-actions>
     </mat-card>
