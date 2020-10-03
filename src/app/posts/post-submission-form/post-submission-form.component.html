@@ -1,0 +1,18 @@
+<form (submit)="createPost()" [formGroup]="formGroup" class="post-creation-form">
+  <mat-form-field>
+    <mat-label>{{ 'question' | translate }}</mat-label>
+    <input matInput formControlName="question" />
+  </mat-form-field>
+  <ngx-dropzone (change)="onSelect($event)" [multiple]="true" accept=".png,.jpg">
+    <ngx-dropzone-label>{{ 'clickToUploadImages' | translate }}</ngx-dropzone-label>
+    <ngx-dropzone-image-preview
+      ngProjectAs="ngx-dropzone-preview"
+      *ngFor="let f of files"
+      [file]="f"
+      (removed)="onRemove(f)"
+      [removable]="true"
+    >
+    </ngx-dropzone-image-preview>
+  </ngx-dropzone>
+  <button mat-stroked-button type="submit">{{ 'post' | translate }}</button>
+</form>

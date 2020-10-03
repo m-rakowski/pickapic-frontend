@@ -14,7 +14,11 @@ export class SignInComponent implements OnInit {
   isSignUpFormVisible: boolean;
   signInFormGroup: FormGroup;
 
-  constructor(private authService: AuthService, private angularFirestore: AngularFirestore, private router: Router) {}
+  constructor(
+    private authService: AuthService,
+    private angularFirestore: AngularFirestore,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.signInFormGroup = new FormGroup({
@@ -26,7 +30,10 @@ export class SignInComponent implements OnInit {
   signIn(): void {
     if (this.signInFormGroup.valid) {
       this.authService
-        .signInWithEmailOrUsername(this.signInFormGroup.get('email').value, this.signInFormGroup.get('password').value)
+        .signInWithEmailOrUsername(
+          this.signInFormGroup.get('email').value,
+          this.signInFormGroup.get('password').value
+        )
         .then((result) => {
           this.router.navigate(['']);
         })

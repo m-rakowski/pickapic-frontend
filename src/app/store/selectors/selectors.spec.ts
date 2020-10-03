@@ -29,14 +29,34 @@ describe('Posts selectors', () => {
 
   const postsAsArray: Post[] = [
     {
-      id: 1,
-      content: 'First post',
-      title: 'Title 1',
+      addedByUser: { email: 'firstUser@fake.mail', uid: '49Pp18yPPsQcy22wje2ItLn1HL62' },
+      additionDate: 1,
+      images: [
+        {
+          url: 'someUrl1',
+          voters: ['49Pp18yPPsQcy22wje2ItLn1HL62'],
+        },
+        {
+          url: 'someUrl2',
+          voters: ['DHA9Hj4kX3S08AxXRE2xqtBVVJ92'],
+        },
+      ],
+      question: 'A dog or a cat?',
     },
     {
-      id: 2,
-      content: 'Second post',
-      title: 'Title 2',
+      addedByUser: { email: 'secondUser@fake.mail', uid: '49Pp18yPPsQcy22wje2ItLn1HL62' },
+      additionDate: 1,
+      images: [
+        {
+          url: 'someUrl1',
+          voters: [],
+        },
+        {
+          url: 'someUrl2',
+          voters: ['DHA9Hj4kX3S08AxXRE2xqtBVVJ92'],
+        },
+      ],
+      question: 'Big or small?',
     },
   ];
 
@@ -48,15 +68,35 @@ describe('Posts selectors', () => {
   const postsState: PostsState = {
     loading: true,
     entities: {
-      1: {
-        id: 1,
-        content: 'First post',
-        title: 'Title 1',
+      firstPostId: {
+        addedByUser: { email: 'firstUser@fake.mail', uid: '49Pp18yPPsQcy22wje2ItLn1HL62' },
+        additionDate: 1,
+        images: [
+          {
+            url: 'someUrl1',
+            voters: ['49Pp18yPPsQcy22wje2ItLn1HL62'],
+          },
+          {
+            url: 'someUrl2',
+            voters: ['DHA9Hj4kX3S08AxXRE2xqtBVVJ92'],
+          },
+        ],
+        question: 'A dog or a cat?',
       },
-      2: {
-        id: 2,
-        content: 'Second post',
-        title: 'Title 2',
+      secondPostId: {
+        addedByUser: { email: 'secondUser@fake.mail', uid: '49Pp18yPPsQcy22wje2ItLn1HL62' },
+        additionDate: 1,
+        images: [
+          {
+            url: 'someUrl3',
+            voters: [],
+          },
+          {
+            url: 'someUrl4',
+            voters: ['DHA9Hj4kX3S08AxXRE2xqtBVVJ92'],
+          },
+        ],
+        question: 'Big or small?',
       },
     },
   };

@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { EMPTY, Observable } from 'rxjs';
 import { Post } from '../model/post';
-import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { PostsState } from '../../store/reducers/reducers';
-import { selectIsLoading, selectPostsAsArray } from '../../store/selectors/selectors';
-import { actionClickPostImage, actionCreatePost, actionDeleteLastPost, actionGetAllPosts } from '../../store/actions/actions';
-import { AngularFireStorage } from '@angular/fire/storage';
+import { UtilsService } from '../../services/utils.service';
+import { PostService } from '../services/post.service';
+import { map } from 'rxjs/operators';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
@@ -17,63 +16,64 @@ import { AuthService } from '../../services/auth.service';
 export class PostsListComponent implements OnInit {
   posts$: Observable<Post[]>;
   isLoading$: Observable<boolean>;
-  formGroup: FormGroup;
-  uploadProgressImage1$: Observable<number | undefined>;
-  uploadProgressImage2$: Observable<number | undefined>;
 
   constructor(
     private store: Store<PostsState>,
-    private angularFireStorage: AngularFireStorage, // it used to be readonly
+    public utilsService: UtilsService,
+    private postService: PostService,
     private authService: AuthService
   ) {}
 
   ngOnInit(): void {
-    this.createForm();
-    this.posts$ = this.store.select(selectPostsAsArray);
-    this.isLoading$ = this.store.select(selectIsLoading);
+    this.posts$ = this.postService.getAll();
     this.getAllPosts();
   }
 
-  createPost(): void {
-    if (this.formGroup.valid) {
-      const post: Post = {
-        question: this.formGroup.get('question').value,
-        images: [
-          { url: (this.formGroup.get('images') as FormArray).at(0).value, voters: [] },
-          { url: (this.formGroup.get('images') as FormArray).at(1).value, voters: [] },
-        ],
-      };
-      this.store.dispatch(actionCreatePost({ post }));
-    }
-  }
-
-  async uploadImage(i, event) {
-    const angularFireUploadTask = await this.angularFireStorage.upload(Math.random().toString(36).substring(2), event.target.files[0]);
-    const downloadURL = await angularFireUploadTask.ref.getDownloadURL();
-
-    (this.formGroup.get('images') as FormArray).at(i).patchValue(downloadURL);
+  createPost($event: { post: Post; files: File[] }): void {
+    this.postService.createPostWithFiles($event.post, $event.files).subscribe();
   }
 
   getAllPosts() {
-    this.store.dispatch(actionGetAllPosts());
+    this.posts$ = this.postService.getAll();
   }
 
-  deleteLastPost() {
-    this.store.dispatch(actionDeleteLastPost());
+  clickNthImage(imageId: string, postId: string): void {
+    // this.authService.user$.subscribe((user) => {
+    //   this.postService.upvoteOrDownvote(user, po)
+    // });
   }
 
-  clickNthImage(i, post: Post) {
-    this.store.dispatch(actionClickPostImage({ i, post }));
+  deletePost(post: Post) {
+    this.postService.deletePostById(post.postId).subscribe();
   }
 
-  private createForm(): void {
-    this.formGroup = new FormGroup({
-      question: new FormControl('', [Validators.required]),
-      images: new FormArray([new FormControl(), new FormControl()]),
-    });
+  upvoteImage($event: { postId: string; imageId: string }): void {
+    this.authService.user$
+      .pipe(
+        map((user) => {
+          return this.postService.addVote($event.postId, $event.imageId, user.uid);
+        })
+      )
+      .subscribe();
   }
 
-  getVoteCount(post: Post, i: number) {
-    return post.images[i].voters ? post.images[i].voters.length : 0;
+  downvoteImageWithPostIdAndImageId($event: { postId: string; imageId: string }): void {
+    this.authService.user$
+      .pipe(
+        map((user) => {
+          this.postService.remoteVote($event.postId, $event.imageId, user.uid);
+          // let index = -1;
+          // if ($event.post.images[$event.n].voters) {
+          // index = $event.post.images[$event.n].voters.lastIndexOf(user.uid);
+          // }
+          return EMPTY;
+          // return this.postService.remoteVote($event.post.postId, $event.imageId, index);
+        })
+      )
+      .subscribe();
+  }
+
+  downvoteOrUpvote($event: { post: Post; imageId: string }) {
+    this.postService.upvoteOrDownvote($event.post, $event.imageId);
   }
 }

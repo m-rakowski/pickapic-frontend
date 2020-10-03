@@ -2,9 +2,12 @@ import { createReducer, on } from '@ngrx/store';
 
 import { Post } from '../../posts/model/post';
 import {
+  actionCreatePost,
   actionCreatePostDone,
   actionDeleteLastPostDone,
+  actionDeletePostDone,
   actionDownvotePostImageDone,
+  actionGetAllPosts,
   actionGetAllPostsDone,
   actionUpvotePostImageDone,
 } from '../actions/actions';
@@ -21,52 +24,38 @@ export const initialState: PostsState = {
 
 export const postsReducer = createReducer<PostsState>(
   initialState,
-  // on(actionGetAllPosts, (state) => {
-  //   return { ...state, loading: true };
-  // }),
-  on(actionGetAllPostsDone, (state, action) => {
-    console.log('actionGetAllPostsDone', state, action);
-    const newEntities: { [id: number]: Post } = {};
-    action.posts.forEach((post) => (newEntities[post.id] = post));
-    const newState: PostsState = {
-      loading: false,
-      entities: newEntities,
-    };
-    newState.loading = false;
-    console.log('newState', newState);
-    return newState;
+  on(actionGetAllPosts, (state, action) => {
+    return { ...state, loading: true };
   }),
-  // on(actionCreatePost, (state, action) => {
-  //   return { ...state, loading: true };
-  // }),
+  on(actionGetAllPostsDone, (state, action) => {
+    const newEntities = {};
+    action.posts.forEach((post) => (newEntities[post.postId] = post));
+    // const newEntities: { [id: string]: Post } = action.posts.reduce((acc, curr: Post) => (acc[curr.id] = curr), {});
+
+    return { ...state, entities: newEntities, loading: false };
+  }),
+  on(actionCreatePost, (state, action) => {
+    return { ...state, loading: true };
+  }),
   on(actionCreatePostDone, (state, action) => {
-    console.log('actionCreatePostDone', state, action);
-    const newState = JSON.parse(JSON.stringify(state));
-    newState.entities[action.post.id] = action.post;
-    newState.loading = false;
-    console.log('newState', newState);
-    return newState;
+    return { ...state, loading: false };
   }),
   on(actionDeleteLastPostDone, (state, action) => {
-    console.log('actionDeleteLastPostDone', state, action);
     const newState = JSON.parse(JSON.stringify(state));
-
-    console.log('actionDeleteLastPostDone newState', newState);
     delete newState.entities[action.removedId];
     newState.loading = false;
-    console.log('actionDeleteLastPostDone newState AFTER deleting', newState);
     return newState;
   }),
-
   on(actionUpvotePostImageDone, (state, action) => {
-    const newState = JSON.parse(JSON.stringify(state));
-    return newState;
+    return { ...state };
   }),
-
   on(actionDownvotePostImageDone, (state, action) => {
-    const newState: PostsState = JSON.parse(JSON.stringify(state));
-    const i = newState.entities[action.post.id].images[action.i].voters.indexOf(action.userId);
-    newState.entities[action.post.id].images[action.i].voters.splice(i, 1);
-    return newState;
+    // const newState: PostsState = JSON.parse(JSON.stringify(state));
+    // const i = newState.entities[action.post.postId].images[action.imageId].voters.indexOf(action.userId);
+    // newState.entities[action.post.postId].images[action.imageId].voters.splice(i, 1);
+    return { ...state, loading: false };
+  }),
+  on(actionDeletePostDone, (state, action) => {
+    return { ...state };
   })
 );

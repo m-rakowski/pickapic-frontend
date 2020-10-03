@@ -2,9 +2,10 @@ import { Image } from './image';
 import { User } from './user';
 
 export interface Post {
-  id?: string;
-  additionDate?: number;
+  postId?: string;
+  additionDate?: any;
   question?: string;
-  images: Image[];
+  images?: { [key: number]: Image };
+  // images?: Image[];
   addedByUser?: User;
 }

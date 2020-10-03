@@ -13,7 +13,11 @@ export class SignUpComponent implements OnInit {
   errorMessage: string;
   signUpFormGroup: FormGroup;
 
-  constructor(private authService: AuthService, private angularFirestore: AngularFirestore, private router: Router) {}
+  constructor(
+    private authService: AuthService,
+    private angularFirestore: AngularFirestore,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.signUpFormGroup = new FormGroup({
@@ -24,9 +28,11 @@ export class SignUpComponent implements OnInit {
 
   signUp(): void {
     this.authService
-      .createUserWithEmailAndPassword(this.signUpFormGroup.get('email').value, this.signUpFormGroup.get('password').value)
+      .createUserWithEmailAndPassword(
+        this.signUpFormGroup.get('email').value,
+        this.signUpFormGroup.get('password').value
+      )
       .then((result) => {
-        console.log(result);
         this.router.navigate(['']);
       })
       .catch((error) => {

@@ -7,6 +7,7 @@ import { PostService } from '../../posts/services/post.service';
 import { Post } from '../../posts/model/post';
 import { actionGetAllPosts, actionGetAllPostsDone } from '../actions/actions';
 import { Action } from '@ngrx/store';
+import { User } from '../../posts/model/user';
 
 describe('UserEffects', () => {
   let actions$: Observable<Action>;
@@ -18,7 +19,6 @@ describe('UserEffects', () => {
 
     TestBed.configureTestingModule({
       providers: [
-        PostEffects,
         provideMockActions(() => actions$),
         {
           provide: PostService,
@@ -36,15 +36,24 @@ describe('UserEffects', () => {
   });
 
   describe('actionGetAllPosts', () => {
-    fit('should return an actionGetAllPostsDone action', () => {
+    it('should return an actionGetAllPostsDone action', () => {
       const mockedPosts: Post[] = [
         {
-          id: '1',
-          title: 'First post title',
-          content: 'Fist post content',
+          addedByUser: { email: 'someuser@fake.mail', uid: '49Pp18yPPsQcy22wje2ItLn1HL62' },
+          additionDate: 1,
+          images: [
+            {
+              url: 'someUrl1',
+              voters: ['49Pp18yPPsQcy22wje2ItLn1HL62'],
+            },
+            {
+              url: 'someUrl2',
+              voters: ['DHA9Hj4kX3S08AxXRE2xqtBVVJ92'],
+            },
+          ],
+          question: 'A dog or a cat?',
         },
       ];
-
       const action = actionGetAllPosts();
       const outcome = actionGetAllPostsDone({ posts: mockedPosts });
 

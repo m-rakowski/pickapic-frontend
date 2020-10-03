@@ -1,4 +1,5 @@
 export interface Image {
+  imageId?: string;
   url: string;
-  voters: string[];
+  voters: { [key: number]: string };
 }

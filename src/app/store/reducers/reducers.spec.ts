@@ -44,7 +44,7 @@ describe('Posts Reducer', () => {
         entities: { 1: mockedPosts[0] },
         loading: false,
       };
-      const action = actionDeleteNthPost({ id: mockedPosts[0].id });
+      const action = actionDeleteNthPost({ id: mockedPosts[0].postId });
       const result = postsReducer(stateWithOnePost, action);
 
       const newState: PostsState = {
@@ -54,12 +54,21 @@ describe('Posts Reducer', () => {
       expect(result).toEqual(newState);
     });
   });
-
   const mockedPosts: Post[] = [
     {
-      id: 1,
-      title: 'First post',
-      content: 'Content',
+      addedByUser: { email: 'someuser@fake.mail', uid: '49Pp18yPPsQcy22wje2ItLn1HL62' },
+      additionDate: 1,
+      images: [
+        {
+          url: 'someUrl1',
+          voters: ['49Pp18yPPsQcy22wje2ItLn1HL62'],
+        },
+        {
+          url: 'someUrl2',
+          voters: ['DHA9Hj4kX3S08AxXRE2xqtBVVJ92'],
+        },
+      ],
+      question: 'A dog or a cat?',
     },
   ];
 });
