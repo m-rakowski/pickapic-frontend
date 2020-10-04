@@ -1,12 +1,30 @@
-.user-avatar-photo {
-  background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
-  background-size: cover;
-}
-
 .header {
   display: flex;
   flex-direction: column;
+
+  .mat-card-title {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+
+    .user-avatar-photo {
+      background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
+      background-size: cover;
+      margin-right: 1rem;
+    }
+
+    .delete-button {
+      margin-left: auto;
+      color: darkgray;
+      transition: color 1000ms ease;
+
+      &:hover {
+        color: unset;
+      }
+    }
+  }
 }
+
 .upvoted {
   box-shadow: 0 4px 2px -2px red, 0 2px 2px 0 red, 0 2px 6px 0 red;
 }
@@ -18,10 +36,12 @@
 
   .thumbs-up {
     cursor: pointer;
+
     &:hover {
       box-shadow: 0 4px 2px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14),
         0 2px 6px 0 rgba(0, 0, 0, 0.12);
     }
+
     position: relative;
     width: 48%;
     box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14),
