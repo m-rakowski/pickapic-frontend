@@ -41,6 +41,10 @@ export class PostElementComponent implements OnInit {
   }
 
   getImagesAsList(post: Post): Image[] {
-    return Object.keys(post.images).map((key) => ({ ...post.images[key], imageId: key }));
+    if (!post || !post.images) {
+      return [];
+    } else {
+      return Object.keys(post.images).map((key) => ({ ...post.images[key], imageId: key }));
+    }
   }
 }

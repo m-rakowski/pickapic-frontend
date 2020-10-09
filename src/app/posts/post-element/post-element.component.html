@@ -24,7 +24,7 @@
     >
       <img
         [src]="image.url"
-        alt="First image uploaded by user {{ post.addedByUser.email }}"
+        alt="image uploaded by user {{ post.addedByUser.email }}, imageId={{ image.imageId }}"
         [ngClass]=""
         (click)="clickedImageWithId.next({ post: post, imageId: image.imageId })"
       />

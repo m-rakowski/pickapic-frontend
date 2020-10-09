@@ -5,7 +5,7 @@ import { Store } from '@ngrx/store';
 import { PostsState } from '../../store/reducers/reducers';
 import { UtilsService } from '../../services/utils.service';
 import { PostService } from '../services/post.service';
-import { map } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
@@ -37,14 +37,8 @@ export class PostsListComponent implements OnInit {
     this.posts$ = this.postService.getAll();
   }
 
-  clickNthImage(imageId: string, postId: string): void {
-    // this.authService.user$.subscribe((user) => {
-    //   this.postService.upvoteOrDownvote(user, po)
-    // });
-  }
-
   deletePost(post: Post) {
-    this.postService.deletePostById(post.postId).subscribe();
+    this.postService.removePost(post).subscribe();
   }
 
   upvoteImage($event: { postId: string; imageId: string }): void {
@@ -62,18 +56,25 @@ export class PostsListComponent implements OnInit {
       .pipe(
         map((user) => {
           this.postService.remoteVote($event.postId, $event.imageId, user.uid);
-          // let index = -1;
-          // if ($event.post.images[$event.n].voters) {
-          // index = $event.post.images[$event.n].voters.lastIndexOf(user.uid);
-          // }
           return EMPTY;
-          // return this.postService.remoteVote($event.post.postId, $event.imageId, index);
         })
       )
       .subscribe();
   }
 
   downvoteOrUpvote($event: { post: Post; imageId: string }) {
-    this.postService.upvoteOrDownvote($event.post, $event.imageId);
+    this.authService.user$
+      .pipe(
+        switchMap((user) => {
+          if (!this.utilsService.hasUserVotedForPost(user, $event.post)) {
+            return this.postService.addVote($event.post.postId, $event.imageId, user.uid);
+          } else {
+            if (this.utilsService.hasUserVotedForImageInPost(user, $event.post, $event.imageId)) {
+              return this.postService.remoteVote($event.post.postId, $event.imageId, user.uid);
+            }
+          }
+        })
+      )
+      .subscribe();
   }
 }

@@ -8,6 +8,9 @@ import { TranslateModule } from '@ngx-translate/core';
 import { NgxDropzoneModule } from 'ngx-dropzone';
 import { PostElementComponent } from './post-element/post-element.component';
 import { PostSubmissionFormComponent } from './post-submission-form/post-submission-form.component';
+import { RestPostService } from './services/rest-post.service';
+import { PostService } from './services/post.service';
+import { FirebasePostService } from './services/firebase-post.service';
 
 @NgModule({
   declarations: [PostsListComponent, PostElementComponent, PostSubmissionFormComponent],
@@ -18,6 +21,12 @@ import { PostSubmissionFormComponent } from './post-submission-form/post-submiss
     MaterialModule,
     TranslateModule.forChild(),
     NgxDropzoneModule,
+  ],
+  providers: [
+    {
+      provide: PostService,
+      useClass: FirebasePostService, // <--- Defining the swappable implementation.
+    },
   ],
 })
 export class PostsModule {}

@@ -1,16 +1,13 @@
-<div class="posts-container">
-  <app-post-submission-form (submitForm)="createPost($event)"></app-post-submission-form>
-
-  <ng-container *ngIf="posts$ | async as posts; else noPosts">
-    <app-post-element
-      [post]="post"
-      (delete)="deletePost($event)"
-      (upvoteImage)="upvoteImage($event)"
-      (downVoteImage)="downvoteImageWithPostIdAndImageId($event)"
-      (clickedImageWithId)="downvoteOrUpvote($event)"
-      *ngFor="let post of posts"
-    ></app-post-element>
-  </ng-container>
+<app-post-submission-form (submitForm)="createPost($event)"></app-post-submission-form>
+<div *ngIf="posts$ | async as posts; else noPosts" class="posts-container">
+  <app-post-element
+    [post]="post"
+    (delete)="deletePost($event)"
+    (upvoteImage)="upvoteImage($event)"
+    (downVoteImage)="downvoteImageWithPostIdAndImageId($event)"
+    (clickedImageWithId)="downvoteOrUpvote($event)"
+    *ngFor="let post of posts"
+  ></app-post-element>
 </div>
 <ng-template #noPosts>
   <p>{{ 'noPostsFound' | translate }}</p>
