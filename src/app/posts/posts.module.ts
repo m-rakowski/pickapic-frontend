@@ -25,7 +25,7 @@ import { FirebasePostService } from './services/firebase-post.service';
   providers: [
     {
       provide: PostService,
-      useClass: FirebasePostService, // <--- Defining the swappable implementation.
+      useClass: RestPostService, // <--- Defining the swappable implementation.
     },
   ],
 })

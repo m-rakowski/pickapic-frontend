@@ -4,7 +4,6 @@ import { Observable, of } from 'rxjs';
 import { map, mergeMap, pluck, switchMap } from 'rxjs/operators';
 import { User } from '../model/user';
 import { AuthService } from '../../services/auth.service';
-import * as firebase from 'firebase';
 import { UtilsService } from '../../services/utils.service';
 import { Image } from '../model/image';
 import { PostService } from './post.service';
@@ -26,13 +25,16 @@ export class RestPostService implements PostService {
     const user: User = JSON.parse(sessionStorage.getItem('user'));
     const newPost: Post = {
       ...post,
-      additionDate: firebase.database.ServerValue.TIMESTAMP,
-      addedByUser: {
+      additionDate: Date(),
+      addedByUser: null,
+    };
+    if (user) {
+      newPost.addedByUser = {
         uid: user.uid,
         email: user.email,
         displayName: user.displayName,
-      },
-    };
+      };
+    }
     return this.httpClient
       .post<Post>('/api/posts', newPost)
       .pipe(switchMap((responsePost) => this.addImagesToPost(imageUrls, responsePost.postId)));
@@ -89,6 +91,7 @@ export class RestPostService implements PostService {
   addImagesToPost(imageUrls: string[], postId: string): Observable<any> {
     return of({});
   }
+
   removePost(post: Post): Observable<any> {
     return of({});
   }
