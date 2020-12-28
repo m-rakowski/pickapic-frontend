@@ -7,6 +7,7 @@ import { UtilsService } from '../../services/utils.service';
 import { PostService } from '../services/post.service';
 import { map, switchMap } from 'rxjs/operators';
 import { AuthService } from '../../services/auth.service';
+import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-posts-list',
@@ -16,6 +17,7 @@ import { AuthService } from '../../services/auth.service';
 export class PostsListComponent implements OnInit {
   posts$: Observable<Post[]>;
   isLoading$: Observable<boolean>;
+  profileForm: FormGroup;
 
   constructor(
     private store: Store<PostsState>,
@@ -25,12 +27,15 @@ export class PostsListComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.profileForm = new FormGroup({ a: new FormControl() });
     this.posts$ = this.postService.getAll();
     this.getAllPosts();
   }
 
   createPost($event: { post: Post; files: File[] }): void {
-    this.postService.createPostWithFiles($event.post, $event.files).subscribe();
+    this.postService
+      .createPostWithFiles($event.post, $event.files)
+      .subscribe(() => (this.posts$ = this.postService.getAll()));
   }
 
   getAllPosts() {

@@ -73,7 +73,9 @@ export class RestPostService implements PostService {
   }
 
   uploadImages(files: File[]): Observable<string[]> {
-    return of(['file.png']);
+    const formData = new FormData();
+    files.forEach((file) => formData.append('files', file));
+    return this.httpClient.post<any>('/api/images/image', formData).pipe(map(() => ['enter real values'])); // TODO: enter real values
   }
 
   createPostWithFiles(post: Post, files: File[]): Observable<any> {

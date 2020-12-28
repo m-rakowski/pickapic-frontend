@@ -3,7 +3,7 @@
     <mat-label>{{ 'question' | translate }}</mat-label>
     <input matInput formControlName="question" />
   </mat-form-field>
-  <ngx-dropzone (change)="onSelect($event)" [multiple]="true" accept=".png,.jpg">
+  <ngx-dropzone (change)="onSelect($event)" [multiple]="true" accept="image/*">
     <ngx-dropzone-label>{{ 'clickToUploadImages' | translate }}</ngx-dropzone-label>
     <ngx-dropzone-image-preview
       ngProjectAs="ngx-dropzone-preview"
