@@ -43,7 +43,7 @@ export class PostsListComponent implements OnInit {
   }
 
   deletePost(post: Post) {
-    this.postService.removePost(post).subscribe();
+    this.postService.removePost(post).subscribe(() => (this.posts$ = this.postService.getAll()));
   }
 
   upvoteImage($event: { postId: string; imageId: string }): void {

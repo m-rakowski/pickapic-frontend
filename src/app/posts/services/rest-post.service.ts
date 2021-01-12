@@ -1,13 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { Post } from '../model/post';
 import { Observable, of } from 'rxjs';
-import { map, mergeMap, pluck, switchMap } from 'rxjs/operators';
+import { map, mergeMap, pluck, switchMap, tap } from 'rxjs/operators';
 import { User } from '../model/user';
 import { AuthService } from '../../services/auth.service';
 import { UtilsService } from '../../services/utils.service';
 import { Image } from '../model/image';
 import { PostService } from './post.service';
 import { Injectable } from '@angular/core';
+import { PostRequest } from '../model/post-request';
 
 @Injectable()
 export class RestPostService implements PostService {
@@ -21,23 +22,17 @@ export class RestPostService implements PostService {
     return this.httpClient.get<Post[]>('/api/posts');
   }
 
-  createPost(post: Post, imageUrls: string[]): Observable<any> {
-    const user: User = JSON.parse(sessionStorage.getItem('user'));
-    const newPost: Post = {
-      ...post,
-      additionDate: Date(),
-      addedByUser: null,
+  createPost(post: Post, imageUrls): Observable<any> {
+    const postRequest: PostRequest = {
+      question: post.question,
+      imageIds: imageUrls,
     };
-    if (user) {
-      newPost.addedByUser = {
-        uid: user.uid,
-        email: user.email,
-        displayName: user.displayName,
-      };
-    }
-    return this.httpClient
-      .post<Post>('/api/posts', newPost)
-      .pipe(switchMap((responsePost) => this.addImagesToPost(imageUrls, responsePost.postId)));
+
+    return this.createPost2(postRequest);
+  }
+
+  createPost2(postRequest: PostRequest): Observable<any> {
+    return this.httpClient.post<Post>('/api/posts', postRequest);
   }
 
   deletePostById(id: string): Observable<any> {
@@ -75,13 +70,13 @@ export class RestPostService implements PostService {
   uploadImages(files: File[]): Observable<string[]> {
     const formData = new FormData();
     files.forEach((file) => formData.append('files', file));
-    return this.httpClient.post<any>('/api/images/image', formData).pipe(map(() => ['enter real values'])); // TODO: enter real values
+    return this.httpClient.post<string[]>('/api/images/image', formData);
   }
 
   createPostWithFiles(post: Post, files: File[]): Observable<any> {
     return this.uploadImages(files).pipe(
-      mergeMap((downloadUrls: string[]) => {
-        return this.createPost(post, downloadUrls);
+      mergeMap((imageIds: string[]) => {
+        return this.createPost(post, imageIds);
       })
     );
   }
@@ -95,6 +90,6 @@ export class RestPostService implements PostService {
   }
 
   removePost(post: Post): Observable<any> {
-    return of({});
+    return this.httpClient.delete('api/posts/' + post.postId);
   }
 }

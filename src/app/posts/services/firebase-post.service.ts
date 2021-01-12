@@ -135,7 +135,7 @@ export class FirebasePostService implements PostService {
   }
 
   removePost(post: Post): Observable<any> {
-    const downloadUrls = Object.values(post.images).map((images) => images.url);
+    const downloadUrls = Object.values(post.images || []).map((images) => images.url);
     return this.deleteImages(downloadUrls).pipe(mergeMap(() => this.deletePostById(post.postId)));
   }
 }

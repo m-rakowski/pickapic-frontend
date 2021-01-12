@@ -36,30 +36,27 @@
 
   .thumbs-up {
     cursor: pointer;
-
-    &:hover {
-      box-shadow: 0 4px 2px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14),
-        0 2px 6px 0 rgba(0, 0, 0, 0.12);
-    }
-
     position: relative;
     width: 48%;
-    box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14),
-      0 1px 3px 0 rgba(0, 0, 0, 0.12);
 
     img {
       width: 100%;
+      transform: translateY(2px);
     }
 
     .thumbs-up-counter {
       background-color: rgba(0, 0, 0, 0.5);
       cursor: pointer;
       min-width: 48px;
-      padding: 2px;
       color: white;
       position: absolute;
       bottom: 0;
       right: 0;
+      z-index: 2;
+
+      &:hover {
+        transform: scale(1.1);
+      }
     }
   }
 }

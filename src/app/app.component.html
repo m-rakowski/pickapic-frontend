@@ -2,7 +2,7 @@
   <button aria-label="Example icon-button with menu icon" class="example-icon" mat-icon-button>
     <mat-icon>menu</mat-icon>
   </button>
-  <span>My App</span>
+  <span>Pick a pic</span>
   <span *ngIf="authService.user$ | async as user" class="user-profile">{{ user.email }}</span>
   <button
     (click)="signOut()"

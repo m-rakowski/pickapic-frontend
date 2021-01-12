@@ -8,4 +8,5 @@ export interface Post {
   images?: { [key: number]: Image };
   // images?: Image[];
   addedByUser?: User;
+  imageIds?: string[];
 }
