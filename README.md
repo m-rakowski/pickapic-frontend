@@ -1,7 +1,7 @@
 ## A simple instagram-like post aggregator which serves as a voting platform for pictures
 
 ## Live demo
-https://this-or-that-b045e.web.app/
+https://this-or-that-b045e.web.app/ - backend hosted on Google Firebase
 
 <img src="https://github.com/m-rakowski/pickapic-frontend/blob/master/documentation/this-or-that-b045e.web.app_.png" height="790">
 
