@@ -2,6 +2,7 @@
   <mat-card-header class="header">
     <mat-card-title>
       <div
+        data-testid="displayName"
         mat-card-avatar
         class="user-avatar-photo"
         [matTooltip]="post.addedByUser.displayName ? post.addedByUser.displayName : post.addedByUser.email"
